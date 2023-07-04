@@ -15,6 +15,13 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [isSuccess, setIsSuccess] = useState(true)
 
+  const generateId = () => {
+    const min = persons.length
+    const max = 999999
+    const id = Math.floor(Math.random() * (max - min + 1)) + min
+    return id
+}
+
   useEffect(() => {
     personService
       .getAll()
@@ -28,7 +35,7 @@ const App = () => {
     const personObject = {
       name: newName.trim(),
       number: newNumber.trim(),
-      id: persons.length+1
+      id: generateId(),
     }
     const comparisons = persons.map((person) => {
       const areEqual=isEqual(person.name.trim(), newName.trim())
