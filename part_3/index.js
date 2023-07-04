@@ -1,7 +1,31 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
+const cors = require('cors')
 
+app.use(cors())
 app.use(express.json())
+// app.use(morgan('tiny'))
+
+morgan.token('data', (req, res) => {
+   
+    return JSON.stringify(req.body)
+})
+
+const customLogger = (req, res, next) => {
+    const logMessage = [
+      req.method,
+      req.url,
+      res.statusCode,
+      res.getHeader('content-length') || '-',
+      `${res.responseTime} ms`,
+      JSON.stringify(res.body)
+    ].join(' ');
+  
+    console.log(logMessage);
+  
+    next();
+  };
 
 let persons = [
     {
@@ -89,7 +113,7 @@ const generateId = () => {
     return id
 }
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :data'), (request, response) => {
 
     const body = request.body
     const existedName=persons.find(person => person.name === body.name)
@@ -117,7 +141,7 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
