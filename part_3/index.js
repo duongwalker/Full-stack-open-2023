@@ -124,9 +124,6 @@ const generateId = () => {
 app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :data'), (request, response, next) => {
 
     const body = request.body
-    // if (body.name === undefined || body.name === null) {
-    //     return response.status(400).json({ error: 'name missing' })
-    // }
 
     Entry.findOne({ name: body.name })
         .then(existingEntry => {
@@ -155,14 +152,10 @@ app.post('/api/persons', morgan(':method :url :status :res[content-length] - :re
 app.put('/api/persons/:id', (request, response, next) => {
     const body = request.body
 
-    const entry = {
-        name: body.name,
-        number: body.number
-    }
+    const { name, number } = body
 
-    Entry.findByIdAndUpdate(request.params.id, entry, { new: true })
+    Entry.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: 'query' })
         .then(updatedEntry => {
-            console.log('Duong Dayyy nefffff')
             response.json(updatedEntry)
         })
         .catch(error => next(error))
