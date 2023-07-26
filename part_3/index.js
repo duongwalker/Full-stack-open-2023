@@ -1,66 +1,68 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const Entry = require('./models/entry')
 
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
-// app.use(morgan('tiny'))
 
-morgan.token('data', (req, res) => {
-   
+
+
+morgan.token('data', (req) => {
+
     return JSON.stringify(req.body)
 })
 
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+    }
+
+    next(error)
+}
+
+const unknownEndPoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+
 const customLogger = (req, res, next) => {
     const logMessage = [
-      req.method,
-      req.url,
-      res.statusCode,
-      res.getHeader('content-length') || '-',
-      `${res.responseTime} ms`,
-      JSON.stringify(res.body)
-    ].join(' ');
-  
-    console.log(logMessage);
-  
-    next();
-  };
+        req.method,
+        req.url,
+        res.statusCode,
+        res.getHeader('content-length') || '-',
+        `${res.responseTime} ms`,
+        JSON.stringify(res.body)
+    ].join(' ')
 
-let persons = [
-    {
-        "id": 1,
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": 2,
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": 3,
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": 4,
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    }
-]
+    console.log(logMessage)
+
+    next()
+}
+app.use(customLogger)
+
+// let persons = [
+// ]
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons)
-
+    Entry.find({}).then((entries) => {
+        res.json(entries)
+    })
 })
 
 app.get('/info', (req, res) => {
-    // Create a new Date object
-    let currentDate = new Date();
 
-    // Define options for the date and time format
+    let currentDate = new Date()
+
     let options = {
         weekday: 'short',
         year: 'numeric',
@@ -74,74 +76,89 @@ app.get('/info', (req, res) => {
         yearSeparator: '',
         monthSeparator: '',
         daySeparator: ''
-    };
+    }
 
-    let currentDateTime = currentDate.toLocaleString('en-US', options).replace(/\,/g, '');
-    console.log(typeof currentDateTime)
+    let currentDateTime = currentDate.toLocaleString('en-US', options).replace(/,/g, '')
+    console.log(Entry)
 
     res.send(
-        `<p>Phonebook has info for ${persons.length} people</p>
+        `<p>Phonebook has info for ${Entry.length} people</p>
         <p>${currentDateTime} (Eastern European Standard Time)</p>
         `
 
     )
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
 
-    if (person) {
-        response.json(person)
-    }
-    else {
-        response.status(404).end()
-    }
+    Entry.findById(id)
+        .then(entry => {
+            if (entry) {
+                response.json(entry)
+            }
+            else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => {
+            next(error)
+        })
 })
 
 
-app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    persons = persons.filter(person => person.id !== id)
-
-    res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+    Entry.findByIdAndRemove(req.params.id)
+        .then(() => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
-const generateId = () => {
-    const min = persons.length
-    const max = 999999
-    const id = Math.floor(Math.random() * (max - min + 1)) + min
-    return id
-}
-
-app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :data'), (request, response) => {
+app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :data'), (request, response, next) => {
 
     const body = request.body
-    const existedName=persons.find(person => person.name === body.name)
 
-    if (!body.name || !body.number) {
-        return response.status(400).json({
-            error: 'name or number is missing'
+    Entry.findOne({ name: body.name })
+        .then(existingEntry => {
+            if (existingEntry) {
+                existingEntry.number = body.number
+                existingEntry.save().then(savedEntry => {
+                    response.json(savedEntry)
+                })
+            }
+
+            else {
+                const entry = new Entry({
+                    name: body.name,
+                    number: body.number
+                })
+                entry.save().then(savedEntry => {
+                    response.json(savedEntry)
+                })
+                    .catch(error => next(error))
+            }
+
         })
-    }
-    
-    else if(existedName) {
-     return response.status(400).json({
-         error: 'name must be unique'
-     })
-    }
-
-
-    const person = {
-        id: generateId(),
-        name: body.name,
-        number: body.number
-    }
-
-    persons = persons.concat(person)
-    response.json(person)
+        .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+
+    const { name, number } = body
+
+    Entry.findByIdAndUpdate(request.params.id, { name, number }, { new: true, runValidators: true, context: 'query' })
+        .then(updatedEntry => {
+            response.json(updatedEntry)
+        })
+        .catch(error => next(error))
+})
+
+
+app.use(unknownEndPoint)
+app.use(errorHandler)
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
