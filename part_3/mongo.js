@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose')
-
 
 const commandLength = process.argv.length
 if (commandLength < 3) {
@@ -30,7 +30,7 @@ if (commandLength > 3) {
         number: number
     })
 
-    entry.save().then(result => {
+    entry.save().then(() => {
         console.log(`added ${process.argv[3]} number ${process.argv[4]} to phonebook`)
         mongoose.connection.close()
     })

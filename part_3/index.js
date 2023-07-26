@@ -8,10 +8,10 @@ const Entry = require('./models/entry')
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
-// app.use(morgan('tiny'))
 
 
-morgan.token('data', (req, res) => {
+
+morgan.token('data', (req) => {
 
     return JSON.stringify(req.body)
 })
@@ -42,15 +42,16 @@ const customLogger = (req, res, next) => {
         res.getHeader('content-length') || '-',
         `${res.responseTime} ms`,
         JSON.stringify(res.body)
-    ].join(' ');
+    ].join(' ')
 
-    console.log(logMessage);
+    console.log(logMessage)
 
-    next();
-};
+    next()
+}
+app.use(customLogger)
 
-let persons = [
-]
+// let persons = [
+// ]
 
 app.get('/api/persons', (req, res) => {
     Entry.find({}).then((entries) => {
@@ -60,7 +61,7 @@ app.get('/api/persons', (req, res) => {
 
 app.get('/info', (req, res) => {
 
-    let currentDate = new Date();
+    let currentDate = new Date()
 
     let options = {
         weekday: 'short',
@@ -75,13 +76,13 @@ app.get('/info', (req, res) => {
         yearSeparator: '',
         monthSeparator: '',
         daySeparator: ''
-    };
+    }
 
-    let currentDateTime = currentDate.toLocaleString('en-US', options).replace(/\,/g, '');
-    console.log(persons.length)
+    let currentDateTime = currentDate.toLocaleString('en-US', options).replace(/,/g, '')
+    console.log(Entry)
 
     res.send(
-        `<p>Phonebook has info for ${persons.length} people</p>
+        `<p>Phonebook has info for ${Entry.length} people</p>
         <p>${currentDateTime} (Eastern European Standard Time)</p>
         `
 
@@ -91,7 +92,7 @@ app.get('/info', (req, res) => {
 app.get('/api/persons/:id', (request, response, next) => {
     const id = Number(request.params.id)
 
-    Entry.findById(request.params.id)
+    Entry.findById(id)
         .then(entry => {
             if (entry) {
                 response.json(entry)
@@ -106,20 +107,13 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
     Entry.findByIdAndRemove(req.params.id)
-        .then(result => {
+        .then(() => {
             res.status(204).end()
         })
         .catch(error => next(error))
 })
-
-const generateId = () => {
-    const min = persons.length
-    const max = 999999
-    const id = Math.floor(Math.random() * (max - min + 1)) + min
-    return id
-}
 
 app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :data'), (request, response, next) => {
 
@@ -164,6 +158,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.use(unknownEndPoint)
 app.use(errorHandler)
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {
