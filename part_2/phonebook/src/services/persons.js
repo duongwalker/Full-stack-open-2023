@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'https://render-test-eegp.onrender.com/api/persons'
+const baseUrl = 'http://localhost:3001/persons'
 
 const getAll = () => {
   return axios.get(baseUrl)
