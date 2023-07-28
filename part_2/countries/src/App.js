@@ -14,13 +14,17 @@ const App = () => {
 
   const handleFilterChange = (e) => {
     e.preventDefault();
+    
     setFilter(e.target.value);
   };
 
+  const handleShowButtonClick = () => {
+    setFilter("");
+  }
   return (
     <div>
       <Filter value={filter} onChange={handleFilterChange} />
-      <Countries countriesData={countriesData} filter={filter} />
+      <Countries countriesData={countriesData} filter={filter} onShowButtonClick={handleShowButtonClick}/>
     </div>
   );
 };
