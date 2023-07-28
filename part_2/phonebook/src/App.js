@@ -45,9 +45,12 @@ const App = () => {
       if (window.confirm(`${newName.trim()} is already added to phonebook, replace the old number with a new one?`)) {
         persons.map((person) => {
           if (person.name.trim() === newName.trim()) {
+<<<<<<< HEAD
+=======
             console.log('Helooooooo')
 
 
+>>>>>>> 97bde37e0bdcfa7feb5a3a1ba0aaeda6045c45ac
             updateName(person.id, personObject)
           }
         })
@@ -64,6 +67,12 @@ const App = () => {
             setPersons(persons.concat(response.data))
             setNewName('')
             setNewNumber('')
+<<<<<<< HEAD
+            setIsSuccess(true)
+            setMessage(`Added ${newName}`)
+          })
+      }
+=======
           })
           .catch(error => {
             console.log(error.response.data.error)
@@ -76,6 +85,7 @@ const App = () => {
         setMessage()
       }
 
+>>>>>>> 97bde37e0bdcfa7feb5a3a1ba0aaeda6045c45ac
       else {
         alert('Please fill in the name and number!')
       }
@@ -118,6 +128,20 @@ const App = () => {
     personService
       .update(id, newObject)
       .then(returnedPerson => {
+<<<<<<< HEAD
+        console.log(returnedPerson)
+        setPersons(persons.map(person => {
+          return person.id !== id ? person : returnedPerson
+        }))
+
+      })
+      .catch(error => {
+        setIsSuccess(false)
+        setMessage(`Information of ${newObject.name.trim()} has already been removed from the server`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+=======
         if (returnedPerson.data === null) {
           setIsSuccess(false)
           setMessage(`Information of ${newObject.name.trim()} has already been removed from the server`)
@@ -136,6 +160,7 @@ const App = () => {
         console.log(error.response.data.error)
         setIsSuccess(false)
         setMessage(error.response.data.error)
+>>>>>>> 97bde37e0bdcfa7feb5a3a1ba0aaeda6045c45ac
       })
   }
 
