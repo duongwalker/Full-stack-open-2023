@@ -45,7 +45,6 @@ const App = () => {
       if (window.confirm(`${newName.trim()} is already added to phonebook, replace the old number with a new one?`)) {
         persons.map((person) => {
           if (person.name.trim() === newName.trim()) {
-            console.log('Helooooooo')
             updateName(person.id, personObject)
           }
         })
