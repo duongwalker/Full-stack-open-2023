@@ -52,8 +52,6 @@ test('creates a new blog post', async () => {
         .expect(201)
 
     const blogsAtEnd = await helper.blogsInDb()
-    console.log(blogsAtEnd)
-    console.log(blogsAtEnd.includes(blogToBeCreated))
     expect(blogsAtEnd.includes(blogToBeCreated))
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 }, 100000)
@@ -113,6 +111,7 @@ test('delete a blog', async() => {
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length-1)
 },10000)
 
+
 test('update a blog', async() => {
     const existingBlogs = await helper.blogsInDb()
     const blogToBeUpdated = existingBlogs[1]
@@ -127,7 +126,6 @@ test('update a blog', async() => {
         .expect(200)
     
     expect(response.body.likes).toBe(updatedData.likes)
-
 
 })
 

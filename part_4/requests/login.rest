@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkR1b25nIiwiaWQiOiI2NGQ0Y2Q5NmQwZTJlZTA3OTZlYmJlNzAiLCJpYXQiOjE2OTE3NTYyNjN9.X54gZFjtv9LF5ZMWUPnt5C1olOzUIKK7VbDHo0wZxQI
+
+{
+    "title": "Test title",
+    "author": "Duong token",
+    "url": "https://fullstackopen.com/en/part4/token_authentication#limiting-creating-new-notes-to-logged-in-users",
+    "likes": 10000,
+    "user": "64d4cd96d0e2ee0796ebbe70"
+}
