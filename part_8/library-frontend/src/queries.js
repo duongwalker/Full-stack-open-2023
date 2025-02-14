@@ -26,8 +26,20 @@ export const ALL_BOOKS = gql`
 //   }
 // `
 
-// export const CREATE_PERSON = gql`
-//   mutation createPerson($name: String!, $street: String!, $city: String!, $phone: String) {
-//     // ...
-//   }
-// `
+export const CREATE_BOOK = gql`
+  mutation createPerson($title: String!, $author: String!, $published: String!, $genres: [String]!) {
+
+      addBook(
+        title: $title,
+        author: $author,
+        published: $published,
+        genres: $genres
+      ) {
+        title
+        author
+        published
+        genres
+      }
+
+  }
+`
