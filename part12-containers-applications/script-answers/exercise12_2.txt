@@ -1,0 +1,10 @@
+Script started on 2025-05-02 18:14:30+03:00 [TERM="xterm-256color" TTY="/dev/pts/5" COLUMNS="84" LINES="40"]
+[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[00m$ [K[A[K]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[00m$ [K[A[K]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[00m$ docker run -it ubuntu bash
+[?2004l[?2004h]0;root@54f0f4496351: /root@54f0f4496351:/# mkdir -p /usr/src/app
+[?2004l[?2004h]0;root@54f0f4496351: /root@54f0f4496351:/# touch /usr/src/app/index.js
+[?2004l[?2004h]0;root@54f0f4496351: /root@54f0f4496351:/# [Kexit
+[?2004lexit
+[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[00m$ exxi[K[Kit
+[?2004lexit
+
+Script done on 2025-05-02 18:15:26+03:00 [COMMAND_EXIT_CODE="0"]
