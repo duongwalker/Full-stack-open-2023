@@ -5,3 +5,17 @@ services:
     build: .
     ports:
       - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb+srv://duongtrick1:0989542210@todos.escsgsd.mongodb.net/?retryWrites=true&w=majority&appName=todos
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=duongtrick1
+      - MONGO_INITDB_ROOT_PASSWORD=0989542210
+      - MONGO_INITDB_DATABASE=the_database

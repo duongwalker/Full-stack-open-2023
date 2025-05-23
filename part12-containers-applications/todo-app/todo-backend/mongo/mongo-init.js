@@ -4,7 +4,7 @@ db.createUser({
   roles: [
     {
       role: 'dbOwner',
-      db: 'todos',
+      db: 'the_database',
     },
   ],
 });
