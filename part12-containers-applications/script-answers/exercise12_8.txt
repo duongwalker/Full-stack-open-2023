@@ -1,0 +1,118 @@
+Script started on 2025-05-27 02:08:37+03:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="198" LINES="30"]
+[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications[00m$ cd ti[Kodo-app/ti[Kodo-v=[K[Kbackend/
+[?2004l[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[00m$ docker container ls
+[?2004lCONTAINER ID   IMAGE     COMMAND                  CREATED      STATUS         PORTS                     NAMES
+102fb84e02b1   redis     "docker-entrypoint.s…"   3 days ago   Up 2 minutes   0.0.0.0:6379->6379/tcp    todo-backend-redis-1
+8c73d793a9fd   mongo     "docker-entrypoint.s…"   3 days ago   Up 2 minutes   0.0.0.0:3456->27017/tcp   todo-backend-mongo-1
+[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[00m$ docker -[Kexect 0[K[K[K 0[K-it d[Ktodo-bacekd[K[K[K[Kkend[K[K[K[Kckend-mongo-1 bash
+[?2004l[?2004hroot@8c73d793a9fd:/# mongosh -u   duongtrick1 -p 098965  543 2201  10
+[?2004l]0;mongosh mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000Current Mongosh Log ID:	6834f4c36e3c3cd192d861df
+Connecting to:		[1m[32mmongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0[0m
+Using MongoDB:		8.0.9
+[1m[33mUsing Mongosh[0m:		2.5.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+[1G[0J [1G[?2004h[1m[33m------[0m
+   [1m[33mThe server generated these startup warnings when booting[0m
+   2025-05-26T23:06:30.346+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2025-05-26T23:06:31.112+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2025-05-26T23:06:31.113+00:00: We suggest setting the contents of sysfsFile to 0.
+   2025-05-26T23:06:31.113+00:00: vm.max_map_count is too low
+   2025-05-26T23:06:31.113+00:00: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+[1m[33m------[0m
+
+[1G[0Jtest> [7Gshow dbs
+[1madmin[0m         100.00 KiB
+[1mconfig[0m         96.00 KiB
+[1mlocal[0m          72.00 KiB
+[1mthe_database[0m   72.00 KiB
+[1G[0Jtest> [7Guse the_[1G[0Jtest> use the[14G-[1G[0Jtest> use the[14G_database
+switched to db the_database
+[1G[0Jthe_database> [15Gshow collections
+[1mtodos[0m
+[1G[0Jthe_database> [15Gdb.todos.find({})
+[
+  {
+    _id: ObjectId([32m'68307cc4c7c12187ccd861e0'[39m),
+    text: [32m'Write code'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'68307cc4c7c12187ccd861e1'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  },
+  {
+    _id: ObjectId([32m'68307ec365840ef86cd861e0'[39m),
+    text: [32m'Increase the number of tools in my tool belt'[39m,
+    done: [33mfalse[39m
+  },
+  {
+    _id: ObjectId([32m'6830d3b74dace5059437b0a8'[39m),
+    text: [32m'test 10'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d3f4dd057342d0d4fa0b'[39m),
+    text: [32m'test 14'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d44eee5ded4710dcee05'[39m),
+    text: [32m'test 25'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d48bac25292430d5733e'[39m),
+    text: [32m'test 125'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d4a7ac25292430d57340'[39m),
+    text: [32m'test 1235'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d4d002b97d30dcb47778'[39m),
+    text: [32m'test 12365'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6830d5aa6a11c80b44200ad0'[39m),
+    text: [32m'test 12365'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6834efdb18eedb2cc09c968f'[39m),
+    text: [32m'note to increase statistics to 9002'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6834f036e8fc7a52342de7c2'[39m),
+    text: [32m'note to increase statistics to 9002 (2)'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  },
+  {
+    _id: ObjectId([32m'6834f0a4e8fc7a52342de7c4'[39m),
+    text: [32m'note to increase statistics to 1'[39m,
+    done: [33mfalse[39m,
+    __v: [33m0[39m
+  }
+]
+[1G[0Jthe_database> [15Gexit
+[?2004l[?2004hroot@8c73d793a9fd:/# exit
+[?2004lexit
+[?2004h]0;duong@LAPTOP-DHRTUF20: /mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[01;32mduong@LAPTOP-DHRTUF20[00m:[01;34m/mnt/d/TAMK/1S/Full-stack-open-2023/part12-containers-applications/todo-app/todo-backend[00m$ exit
+[?2004lexit
+
+Script done on 2025-05-27 02:10:44+03:00 [COMMAND_EXIT_CODE="0"]
