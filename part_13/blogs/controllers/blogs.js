@@ -1,6 +1,7 @@
 const express = require('express');
 const { Blog, User } = require('../models');
 const { Op } = require('sequelize');
+const { sessionValidator } = require('./users');
 
 const router = express.Router();
 
@@ -25,26 +26,24 @@ router.get('/', async (req, res) => {
   res.json(blogs);
 });
 
-// POST /api/blogs
-router.post('/', async (req, res) => {
+// POST /api/blogs (requires login)
+router.post('/', sessionValidator, async (req, res) => {
   const { userId, ...blogData } = req.body;
-  if (!userId) {
-    return res.status(400).json({ error: 'userId is required' });
-  }
-  const user = await User.findByPk(userId);
+  // Use req.user from sessionValidator
+  const user = req.user;
   if (!user) {
-    return res.status(400).json({ error: 'Invalid userId' });
+    return res.status(401).json({ error: 'Unauthorized' });
   }
   try {
-    const blog = await Blog.create({ ...blogData, userId });
+    const blog = await Blog.create({ ...blogData, userId: user.id });
     res.status(201).json(blog);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
 
-// DELETE /api/blogs/:id
-router.delete('/:id', async (req, res) => {
+// DELETE /api/blogs/:id (requires login)
+router.delete('/:id', sessionValidator, async (req, res) => {
   const id = req.params.id;
   const deleted = await Blog.destroy({ where: { id } });
   if (deleted) {

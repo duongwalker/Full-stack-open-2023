@@ -1,35 +1,33 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../util/db');
 
-class Blog extends Model {}
+class Session extends Model {}
 
-Blog.init({
+Session.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  author: {
-    type: DataTypes.STRING,
-  },
-  url: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  likes: {
+  user_id: {
     type: DataTypes.INTEGER,
-    defaultValue: 0,
+    allowNull: false,
   },
-  // userId is a foreign key, handled by association
+  token: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  },
 }, {
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'blog',
+  modelName: 'session',
 });
 
-module.exports = Blog; 
+module.exports = Session; 

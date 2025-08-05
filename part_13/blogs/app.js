@@ -3,7 +3,7 @@ require('express-async-errors');
 const config = require('./util/config');
 const sequelize = require('./util/db');
 const blogsRouter = require('./controllers/blogs');
-const usersRouter = require('./controllers/users');
+const usersRouter = require('./controllers/users').router;
 const authorsRouter = require('./controllers/authors');
 
 const app = express();
